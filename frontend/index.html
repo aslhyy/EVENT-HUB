@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub - Gestión de Eventos Profesional</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <div class="logo">
+                        <i class="fas fa-calendar-star"></i>
+                        <span>EventHub</span>
+                    </div>
+                    
+                    <ul class="nav-menu" id="navMenu">
+                        <li><a href="#home" class="nav-link active">Inicio</a></li>
+                        <li><a href="#events" class="nav-link">Eventos</a></li>
+                        <li><a href="#about" class="nav-link">Nosotros</a></li>
+                        <li><a href="#contact" class="nav-link">Contacto</a></li>
+                    </ul>
+                    
+                    <div class="nav-actions">
+                        <button class="btn-secondary" id="btnLogin">
+                            <i class="fas fa-sign-in-alt"></i> Ingresar
+                        </button>
+                        <button class="btn-primary" id="btnRegister">
+                            <i class="fas fa-user-plus"></i> Registro
+                        </button>
+                        <button class="btn-icon" id="menuToggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title animate-fade-in">
+                    Descubre los Mejores <span class="gradient-text">Eventos</span>
+                </h1>
+                <p class="hero-subtitle animate-fade-in-delay">
+                    Conecta, aprende y crece con EventHub. La plataforma líder en gestión de eventos profesionales.
+                </p>
+                <div class="hero-buttons animate-fade-in-delay-2">
+                    <button class="btn-large btn-primary" onclick="scrollToSection('events')">
+                        <i class="fas fa-search"></i> Explorar Eventos
+                    </button>
+                    <button class="btn-large btn-outline" onclick="openDashboard()">
+                        <i class="fas fa-plus-circle"></i> Crear Evento
+                    </button>
+                </div>
+                
+                <!-- Stats -->
+                <div class="hero-stats animate-fade-in-delay-3">
+                    <div class="stat-item">
+                        <h3 id="totalEvents">0</h3>
+                        <p>Eventos Activos</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="totalAttendees">0</h3>
+                        <p>Asistentes</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="totalCategories">0</h3>
+                        <p>Categorías</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search & Filter Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar eventos por nombre, categoría...">
+                </div>
+                
+                <div class="filters">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="">Todas las Categorías</option>
+                    </select>
+                    
+                    <select id="cityFilter" class="filter-select">
+                        <option value="">Todas las Ciudades</option>
+                        <option value="Bogotá">Bogotá</option>
+                        <option value="Medellín">Medellín</option>
+                        <option value="Cali">Cali</option>
+                        <option value="Barranquilla">Barranquilla</option>
+                    </select>
+                    
+                    <select id="dateFilter" class="filter-select">
+                        <option value="">Todas las Fechas</option>
+                        <option value="today">Hoy</option>
+                        <option value="week">Esta Semana</option>
+                        <option value="month">Este Mes</option>
+                    </select>
+                    
+                    <button class="btn-icon" id="btnFilterToggle">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Events -->
+    <section class="featured-section" id="events">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Eventos Destacados</h2>
+                <p class="section-subtitle">Los eventos más populares y esperados</p>
+            </div>
+            
+            <div class="events-grid" id="featuredEventsGrid">
+                <!-- Loading spinner -->
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Cargando eventos...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Events -->
+    <section class="events-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Todos los Eventos</h2>
+                <div class="view-toggles">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="events-grid" id="allEventsGrid">
+                <!-- Events will be loaded here -->
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Explora por Categoría</h2>
+                <p class="section-subtitle">Encuentra eventos según tus intereses</p>
+            </div>
+            
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Categories will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">Sobre EventHub</h2>
+                    <p>EventHub es la plataforma líder en gestión de eventos profesionales en Colombia. Desarrollada con tecnología de punta por un equipo apasionado del SENA.</p>
+                    
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Sistema de Tickets Inteligente</h4>
+                                <p>Gestión automática de ventas y control de acceso</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Check-in Digital</h4>
+                                <p>Registro rápido y seguro con códigos QR</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Analytics en Tiempo Real</h4>
+                                <p>Estadísticas detalladas de tus eventos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Nuestro Equipo</h2>
+                <p class="section-subtitle">Desarrollado con pasión por estudiantes del SENA</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-crown"></i>
+                    </div>
+                    <h3>Aslhy Martínez</h3>
+                    <p class="role">Líder del Proyecto</p>
+                    <p class="description">App: Sponsors & Frontend</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Sarah García</h3>
+                    <p class="role">Desarrolladora Backend</p>
+                    <p class="description">App: Events</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Karen Rodríguez</h3>
+                    <p class="role">Desarrolladora Backend</p>
+                    <p class="description">App: Tickets</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Neyireth López</h3>
+                    <p class="role">Desarrolladora Backend</p>
+                    <p class="description">App: Attendees</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-calendar-star"></i> EventHub</h3>
+                    <p>Plataforma profesional de gestión de eventos desarrollada con Django REST Framework.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="#events">Eventos</a></li>
+                        <li><a href="#about">Nosotros</a></li>
+                        <li><a href="pages/dashboard.html">Dashboard</a></li>
+                        <li><a href="/swagger/">API Docs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> eventhub@sena.edu.co</li>
+                        <li><i class="fas fa-phone"></i> +57 300 123 4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Bogotá, Colombia</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 EventHub - SENA. Desarrollado con ❤️ por el Equipo EventHub</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Event Detail Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="modalContent">
+                <!-- Event details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

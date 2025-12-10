@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EventHub</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-calendar-star"></i>
+                <span>EventHub</span>
+            </div>
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#events" class="nav-item">
+                <i class="fas fa-calendar"></i>
+                <span>Mis Eventos</span>
+            </a>
+            <a href="#tickets" class="nav-item">
+                <i class="fas fa-ticket-alt"></i>
+                <span>Mis Tickets</span>
+            </a>
+            <a href="#create" class="nav-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>Crear Evento</span>
+            </a>
+            <a href="#analytics" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Estadísticas</span>
+            </a>
+            <a href="#profile" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>Mi Perfil</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-secondary btn-block" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="topbar">
+            <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="topbar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Buscar eventos, tickets...">
+            </div>
+
+            <div class="topbar-actions">
+                <button class="topbar-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <img src="https://ui-avatars.com/api/?name=Usuario&background=6366f1&color=fff" alt="Usuario">
+                    <span id="userName">Usuario</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <h1>Bienvenido de vuelta, <span id="userGreeting">Usuario</span></h1>
+                <p>Aquí está un resumen de tus eventos y actividades</p>
+            </section>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalMyEvents">0</h3>
+                        <p>Mis Eventos</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalMyTickets">0</h3>
+                        <p>Mis Tickets</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalAttendees">0</h3>
+                        <p>Asistentes</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalRevenue">$0</h3>
+                        <p>Ingresos</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2>Acciones Rápidas</h2>
+                <div class="actions-grid">
+                    <button class="action-card" onclick="createEvent()">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Crear Evento</span>
+                    </button>
+                    <button class="action-card" onclick="viewTickets()">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Ver Tickets</span>
+                    </button>
+                    <button class="action-card" onclick="viewAnalytics()">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Estadísticas</span>
+                    </button>
+                    <button class="action-card" onclick="goToEvents()">
+                        <i class="fas fa-search"></i>
+                        <span>Explorar Eventos</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Recent Events -->
+            <section class="recent-section">
+                <div class="section-header">
+                    <h2>Eventos Recientes</h2>
+                    <a href="#" class="view-all">Ver todos <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="events-list" id="recentEvents">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Cargando eventos...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- My Tickets -->
+            <section class="recent-section">
+                <div class="section-header">
+                    <h2>Mis Próximos Eventos</h2>
+                    <a href="#" class="view-all">Ver todos <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="tickets-list" id="myTickets">
+                    <div class="empty-state">
+                        <i class="fas fa-ticket-alt"></i>
+                        <p>No tienes tickets próximos</p>
+                        <button class="btn-primary" onclick="goToEvents()">Explorar Eventos</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>
