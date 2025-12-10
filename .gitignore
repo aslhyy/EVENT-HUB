@@ -39,8 +39,3 @@ mysql
 # Environment variables
 .env
 .env.local
-
-# Apps a ignorar
-/events/
-/tickets/
-/attendees/
